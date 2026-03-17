@@ -1,10 +1,39 @@
-*.log
+# macOS
+.DS_Store
+
+# LaTeX auxiliary/build files
 *.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
 *.fls
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
 *.nav
 *.out
+*.run.xml
 *.snm
-*.gz
+*.synctex.gz
 *.toc
 *.vrb
-*.fdb_latexmk
+*.xdv
+
+# Optional local build directories
+build/
+
+# Workshop-specific generated files
+AI_In_Radio_Astronomy_Workshop/**/%OUTDIR%/
+AI_In_Radio_Astronomy_Workshop/presentation/main\ 2.*
+
+# Track only final PDFs for the AI in Radio Astronomy workshop talk
+!AI_In_Radio_Astronomy_Workshop/abstract/*.pdf
+!AI_In_Radio_Astronomy_Workshop/presentation/*.pdf
