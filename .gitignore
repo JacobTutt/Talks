@@ -37,3 +37,7 @@ AI_In_Radio_Astronomy_Workshop/presentation/main\ 2.*
 # Track only final PDFs for the AI in Radio Astronomy workshop talk
 !AI_In_Radio_Astronomy_Workshop/abstract/*.pdf
 !AI_In_Radio_Astronomy_Workshop/presentation/*.pdf
+
+# Poster build folders contain source scripts needed to regenerate the PDFs
+!Sim2Science_NeurIPS_2026/build/
+!Cavendish_Graduate_Student_Conference_2026/build/

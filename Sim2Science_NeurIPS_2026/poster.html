@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A Cross-Domain Simulator and Benchmark for UQ in Global 21-cm Inference — Sim2Science @ NeurIPS 2026</title>
+<style>
+/* =========================================================
+   A1 PORTRAIT POSTER — 594 x 841 mm
+   J. Tutt, Sim2Science workshop @ NeurIPS 2026, Paris
+   Built from the EuCAIFCon 2026 template (Archive 2/poster.html),
+   rescaled A0 -> A1 (x0.707) and re-laid as a zig-zag.
+   ========================================================= */
+
+@font-face{ font-family:"Pagella"; src:url(fonts/texgyrepagella-regular.otf); font-weight:400; font-style:normal; }
+@font-face{ font-family:"Pagella"; src:url(fonts/texgyrepagella-bold.otf);    font-weight:700; font-style:normal; }
+@font-face{ font-family:"Pagella"; src:url(fonts/texgyrepagella-italic.otf);  font-weight:400; font-style:italic; }
+@font-face{ font-family:"Pagella"; src:url(fonts/texgyrepagella-bolditalic.otf); font-weight:700; font-style:italic; }
+@font-face{ font-family:"Heros";   src:url(fonts/texgyreheros-regular.otf);   font-weight:400; font-style:normal; }
+@font-face{ font-family:"Heros";   src:url(fonts/texgyreheros-bold.otf);      font-weight:700; font-style:normal; }
+@font-face{ font-family:"Heros";   src:url(fonts/texgyreheros-italic.otf);    font-weight:400; font-style:italic; }
+
+@page { size: 594mm 841mm; margin: 0; }
+
+:root{
+  --ink:      #1A1A1A;
+  --grey:     #4C4C4C;
+  --accent:   #0C3B4A;   /* deep petrol, from the template */
+
+  --rule:     #B9C2C6;
+  --tint:     #EEF2F3;
+
+  --serif: "Pagella", "Palatino", "Palatino Linotype", Georgia, serif;
+  --sans:  "Heros", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --M:  20mm;   /* page margin */
+  --G:  12mm;   /* gutter between figure and text panel */
+  --FW: 392mm;  /* figure width in the zig-zag rows */
+
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html,body{
+  width:594mm; height:841mm; background:#fff; color:var(--ink);
+  font-family:var(--serif);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.page{ width:594mm; height:841mm; padding:var(--M); overflow:hidden;
+       display:flex; flex-direction:column; }
+
+/* ---------------- title block ---------------- */
+.titleblock{ display:flex; align-items:flex-start; gap:12mm;
+             border-bottom:1.15mm solid var(--accent); padding-bottom:6mm; }
+.titleblock > div:first-child{ flex:1 1 auto; min-width:0; }
+h1{ text-wrap:balance; font-family:var(--serif); font-weight:700; font-size:14.8mm;
+    line-height:1.08; letter-spacing:-.008em; color:var(--accent); }
+.authors{ font-family:var(--serif); font-size:6.7mm; margin-top:5mm; line-height:1.3; }
+.authors b{ font-weight:700; }
+.affil{ font-family:var(--serif); font-style:italic; font-size:5.5mm;
+        color:var(--grey); margin-top:1.8mm; line-height:1.35; }
+.authors sup, .affil sup{ font-size:.62em; vertical-align:.42em; }
+
+.titleblock .right{ margin-left:auto; text-align:right; flex:0 0 auto; padding-top:1.5mm; }
+.logos{ display:flex; align-items:center; justify-content:flex-end; gap:7mm; }
+.logos img{ display:block; }
+.logos .neurips{ height:33mm; }
+.logos .cam{ width:92mm; }
+.logos .sep{ width:.5mm; height:24mm; background:var(--rule); }
+.venue{ font-family:var(--sans); font-size:5.3mm; line-height:1.5; color:var(--grey); margin-top:7mm; }
+.venue b{ color:var(--accent); font-weight:700; }
+
+/* ---------------- lede + key numbers ---------------- */
+.lede{ display:grid; grid-template-columns:1fr 288mm; gap:var(--G);
+       margin-top:7mm; align-items:stretch; }
+.lede p{ font-size:6.75mm; line-height:1.42; text-align:left; hyphens:manual; }
+.lede p sup{ line-height:0; font-size:.65em; }
+.lede p b{ color:var(--accent); }
+.stats{ display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:1fr 1fr;
+        border-top:1mm solid var(--accent); border-bottom:1mm solid var(--accent); }
+.stat{ padding:3mm 5mm; display:flex; flex-direction:column; justify-content:center; }
+.stat:nth-child(3n+2), .stat:nth-child(3n+3){ border-left:.3mm solid var(--rule); }
+.stat:nth-child(n+4){ border-top:.3mm solid var(--rule); }
+.stat .n{ font-family:var(--serif); font-weight:700; font-size:12.5mm; line-height:1; color:var(--accent); }
+.stat .n small{ font-size:.55em; font-weight:700; }
+.stat .l{ font-family:var(--sans); font-size:4.3mm; line-height:1.3; margin-top:1.8mm; color:var(--grey); }
+.stat .l b{ color:var(--ink); font-weight:700; }
+
+/* ---------------- zig-zag rows ---------------- */
+.rows{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:space-between;
+       margin-top:8mm; min-height:0; }
+.row{ display:grid; gap:var(--G); align-items:stretch; }
+.row.zig{ grid-template-columns:var(--FW) 1fr; }   /* figure left, text right  */
+.row.zag{ grid-template-columns:1fr var(--FW); }   /* text left, figure right */
+
+.row figure{ display:flex; flex-direction:column; justify-content:center; }
+.row figure img{ width:100%; display:block; }
+
+figcaption{ font-family:var(--sans); font-size:4.9mm; line-height:1.38;
+            color:var(--grey); margin-top:2.8mm; text-align:left; }
+figcaption b{ color:var(--ink); font-weight:700; }
+
+.panel{ display:flex; flex-direction:column; justify-content:flex-start; align-self:center;
+        border:.35mm solid var(--rule); padding:0 4.5mm 4.5mm; }
+.panel h2, .bench h2{ margin-left:-4.5mm; margin-right:-4.5mm; margin-top:-.35mm; }
+
+h2{ font-family:var(--sans); font-weight:700; font-size:5.8mm; color:#fff; background:var(--accent);
+    padding:2.3mm 3.4mm 2.5mm; margin-bottom:3.8mm; letter-spacing:.005em; line-height:1.2; }
+h2 .num{ color:#8FB6BF; margin-right:2.4mm; }
+h2 .num::after{ content:"."; }
+
+p{ font-family:var(--serif); font-size:6.3mm; line-height:1.4; text-align:justify; hyphens:auto; }
+p + p{ margin-top:2.6mm; }
+.panel p b, .panel li b{ color:var(--accent); }
+.panel p{ text-align:left; hyphens:manual; }
+b{ hyphens:manual; }
+
+ul{ list-style:none; margin-top:2.6mm; }
+li{ font-family:var(--serif); font-size:6.3mm; line-height:1.4;
+    padding-left:5mm; text-indent:-5mm; text-align:left; }
+li + li{ margin-top:2mm; }
+li::before{ content:"—"; color:var(--accent); margin-right:2mm; }
+
+.row > *{ min-width:0; }
+.sc{ font-variant:small-caps; }
+
+/* ---------------- zig-zag connectors between rows ---------------- */
+.conn{ flex:1 1 0; position:relative; min-height:20mm; }
+.conn .seg{ position:absolute; border-color:var(--accent); border-style:solid; border-width:0; }
+.conn .v1{ top:0; height:50%; border-left-width:1mm; }
+.conn .h { top:50%; border-top-width:1mm; }
+.conn .v2{ top:50%; bottom:3.2mm; border-left-width:1mm; }
+.conn .tip{ position:absolute; bottom:0; width:0; height:0;
+            border-left:2.6mm solid transparent; border-right:2.6mm solid transparent;
+            border-top:3.6mm solid var(--accent); transform:translateX(-50%); margin-left:.5mm; }
+.conn .lab{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            background:#fff; padding:1mm 5mm; font-family:var(--sans); font-weight:700;
+            font-size:6.2mm; color:var(--accent); white-space:nowrap; letter-spacing:.01em; }
+.conn .lab i{ font-weight:400; font-style:italic; color:var(--grey); }
+/* right-panel centre = FW + G + (554 - FW - G)/2 ; left-panel centre = (554 - FW - G)/2 */
+.conn{ --R: calc(var(--FW) + var(--G) + (554mm - var(--FW) - var(--G)) / 2);
+       --L: calc((554mm - var(--FW) - var(--G)) / 2); }
+.conn.r2l .v1{ left:var(--R); } .conn.r2l .h{ left:var(--L); width:calc(var(--R) - var(--L)); }
+.conn.r2l .v2, .conn.r2l .tip{ left:var(--L); }
+.conn.l2r .v1{ left:var(--L); } .conn.l2r .h{ left:var(--L); width:calc(var(--R) - var(--L)); }
+.conn.l2r .v2, .conn.l2r .tip{ left:var(--R); }
+
+/* ---------------- open benchmark band ---------------- */
+.bench{ margin-top:8mm; display:grid; grid-template-columns:1fr 1fr; column-gap:var(--G);
+        border:.35mm solid var(--rule); padding:0 4.5mm 4.5mm; }
+.bench h2{ grid-column:1 / -1; }
+.bench ul{ margin:0; }
+.bench h4{ margin-bottom:1.2mm; }
+.bench li{ font-size:6mm; line-height:1.36; }
+.bench li + li{ margin-top:1.2mm; }
+
+/* ---------------- footer ---------------- */
+.foot{ margin-top:8mm; border-top:1.15mm solid var(--accent); padding-top:5.5mm;
+       display:grid; grid-template-columns:1.15fr 1fr 132mm; gap:var(--G); align-items:start; }
+h3{ font-family:var(--sans); font-weight:700; font-size:5.8mm; color:var(--accent); margin-bottom:2.2mm; }
+.foot li{ font-size:5.5mm; line-height:1.4; }
+.foot li b{ color:var(--accent); }
+.foot li + li{ margin-top:1.5mm; }
+.foot ul{ margin-top:0; }
+.refs{ font-family:var(--sans); font-size:4.5mm; line-height:1.42; color:var(--grey); }
+.refs div{ padding-left:6mm; text-indent:-6mm; }
+.refs div + div{ margin-top:1mm; }
+.qrs{ display:grid; grid-template-columns:repeat(3,1fr); gap:5mm; }
+.qr{ text-align:center; font-family:var(--sans); font-size:4.3mm; color:var(--grey); line-height:1.25; }
+.qr img{ width:100%; display:block; margin-bottom:1.6mm; }
+.qr b{ color:var(--accent); font-weight:700; display:block; font-size:4.9mm; }
+
+/* ---------------- email in header ---------------- */
+a{ color:inherit; text-decoration:none; }
+.env{ display:inline-block; width:.95em; height:.72em; vertical-align:.02em; margin-left:.25em; color:var(--accent); }
+.affil .mail{ font-style:normal; font-family:var(--sans); font-size:.9em; color:var(--accent); }
+.affil .mail .env{ margin:0 .3em 0 0; }
+
+/* sub-headed descriptions (boxes 1–3) */
+.sub + .sub{ margin-top:3.2mm; }
+h4{ font-family:var(--sans); font-weight:700; font-size:5.3mm; color:var(--accent); margin-bottom:.6mm; }
+.sub p{ text-align:left; hyphens:manual; }
+/* panels are bullet-only */
+.panel ul{ margin-top:0; }
+.panel li + li{ margin-top:2.4mm; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══════════════ TITLE ═══════════════ -->
+  <div class="titleblock">
+    <div>
+      <h1>A Cross-Domain Simulator and Benchmark for Uncertainty Quantification in Global 21-cm Inference</h1>
+      <div class="authors"><a href="mailto:jlt67@cam.ac.uk"><b>J. Tutt</b><sup>1</sup><svg class="env" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1.5 2 12 10 22.5 2" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>, H. T. J. Bevins<sup>1,2</sup>, J. Alvey<sup>1</sup>,
+        D. J. Anstey<sup>1</sup>, J. Cumner<sup>1</sup>, E. de Lera Acedo<sup>1</sup> and A. Fialkov<sup>1</sup></div>
+      <div class="affil"><sup>1</sup>University of Cambridge &nbsp;·&nbsp; <sup>2</sup>Imperial College London &nbsp;·&nbsp; <a class="mail" href="mailto:jlt67@cam.ac.uk"><svg class="env" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1.5 2 12 10 22.5 2" fill="none" stroke="currentColor" stroke-width="2"/></svg>jlt67@cam.ac.uk</a></div>
+    </div>
+    <div class="right">
+      <div class="logos">
+        <img class="neurips" src="figures/logo-neurips.svg" alt="NeurIPS">
+        <div class="sep"></div>
+        <img class="cam" src="figures/logo-cambridge.png" alt="University of Cambridge">
+      </div>
+      <div class="venue">
+        <b>Sim2Science</b> · NeurIPS 2026<br>
+        Paris · 12 December 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LEDE + KEY NUMBERS ═══════════════ -->
+  <div class="lede">
+    <p>The formation of the <b>first stars and galaxies</b> remains one of the least constrained epochs
+      in cosmic history. The sky&#8209;averaged 21-cm signal of neutral hydrogen offers a direct window onto this era, but
+      extracting it represents an extreme case of <b>inference under model misspecification</b>. The signal lies
+      beneath foregrounds <b>10<sup>4</sup>&times; brighter</b>, mixed by an imperfectly known instrumental
+      response. With these nuisance components unconstrained <i>a&nbsp;priori</i>, strong degeneracies mean
+      an incomplete generative model can return a <i>confident yet systematically biased</i> posterior.
+      We present a state&#8209;of&#8209;the&#8209;art, differentiable <b>generative model of the full
+      observational chain</b>, alongside simulated observations, providing a scientifically demanding
+      benchmark for stochastic samplers, SBI&nbsp;and&nbsp;VI.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">7.2&thinsp;&times;&thinsp;10<sup><small>7</small></sup></div>
+        <div class="l"><b>faster generative model:</b> 2.8&nbsp;h&nbsp;&rarr;&nbsp;0.14&nbsp;ms on a single&nbsp;GPU</div></div>
+      <div class="stat"><div class="n">137</div>
+        <div class="l"><b>parameters</b> across cosmology, astrophysics and computational electromagnetics</div></div>
+      <div class="stat"><div class="n">100</div>
+        <div class="l"><b>benchmark observations</b> released with reference posteriors and evidences</div></div>
+      <div class="stat"><div class="n">94<small>/100</small></div>
+        <div class="l"><b>injected signals</b> entirely within their 95% credible band</div></div>
+      <div class="stat"><div class="n">384,939</div>
+        <div class="l"><b>simulations per second</b> in batches of 512 on a single&nbsp;GPU</div></div>
+      <div class="stat"><div class="n">5.6&ndash;7.3<small>&thinsp;h</small></div>
+        <div class="l"><b>full nested-sampling run</b> (posterior + evidence) on a single&nbsp;GPU</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ZIG-ZAG ROWS ═══════════════ -->
+  <div class="rows">
+
+    <!-- Row 1: figure LEFT, text RIGHT -->
+    <div class="row zig">
+      <figure>
+        <img src="figures/01-forward-model.png" alt="Multi-physics generative model">
+        <figcaption><b>Figure 1: Multi-physics generative model.</b>
+          Top: physical sources of uncertainty; bottom: their effect on the model. Left: a neural
+          emulator maps astrophysical parameters to the 21-cm signal. Centre: a physics-informed
+          multi-resolution model of the foreground sky. Right: a linear surrogate reconstructs
+          chromatic beam variations from antenna and soil perturbations.</figcaption>
+      </figure>
+      <div class="panel">
+        <h2><span class="num">1</span>A Multi-Physics Generative Model</h2>
+        <div class="sub">
+          <h4>Cosmological Signal</h4>
+          <p>A redshift-conditioned neural emulator of <span class="sc">21cmSPACE</span>, mapping from astrophysics to the global signal.</p>
+        </div>
+        <div class="sub">
+          <h4>Astrophysical Foregrounds</h4>
+          <p>A physics-informed, multi-resolution sky model correcting the brightness and spectral index
+            of the Global Sky Model.</p>
+        </div>
+        <div class="sub">
+          <h4>Electromagnetic Response</h4>
+          <p>A hierarchical, second-order surrogate of 400 CEM simulations, whose linear latent space
+            enables marginal inference over the beam.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn r2l"><div class="seg v1"></div><div class="seg h"></div><div class="seg v2"></div><div class="tip"></div>
+      <div class="lab">Fast enough for end-to-end inference</div></div>
+
+    <!-- Row 2: text LEFT, figure RIGHT -->
+    <div class="row zag">
+      <div class="panel">
+        <h2><span class="num">2</span>Accelerator-Native Inference</h2>
+        <div class="sub">
+          <h4>JAX-Native</h4>
+          <p>Differentiable and JIT-compiled: one network call plus tensor contractions per
+            simulation.</p>
+        </div>
+        <div class="sub">
+          <h4>GPU Parallelism</h4>
+          <p>Vectorised across frequency, observing time and batches of simulations.</p>
+        </div>
+        <div class="sub">
+          <h4>Marginal Inference</h4>
+          <p>All 100 beam coefficients are integrated out analytically, leaving 37 sampled
+            dimensions.</p>
+        </div>
+        <div class="sub">
+          <h4>Parallel Nested Slice Sampling</h4>
+          <p>A GPU-vectorised nested sampler, returning both the posterior and the Bayesian evidence.</p>
+        </div>
+      </div>
+      <figure>
+        <img src="figures/02-inference-pipeline.png" alt="Benchmark inference architecture">
+        <figcaption><b>Figure 2: Benchmark inference architecture.</b>
+          Full-fidelity observations are modelled with the accelerated JAX generative model. GPU-native
+          nested slice sampling (NSS) provides the reference posteriors and evidences (black), while the
+          same model plugs directly into MCMC, VI and simulation-based inference pipelines (red).</figcaption>
+      </figure>
+    </div>
+
+    <div class="conn l2r"><div class="seg v1"></div><div class="seg h"></div><div class="seg v2"></div><div class="tip"></div>
+      <div class="lab">… but is it accurate enough for reliable recovery?</div></div>
+
+    <!-- Row 3: figure LEFT, text RIGHT -->
+    <div class="row zig">
+      <figure>
+        <img src="figures/03-signal-recovery.svg" alt="Signal-profile recovery">
+        <figcaption><b>Figure 3: Signal-profile recovery.</b>
+          Representative injections ordered by minimum whole-profile credible level, from best (a) to
+          worst (d). Lines show the injection and posterior mean, shading the pointwise 68% and 95%
+          intervals; titles give the RMSE.</figcaption>
+      </figure>
+      <div class="panel">
+        <h2><span class="num">3</span>Calibrated Signal Recovery</h2>
+        <div class="sub">
+          <h4>Agnostic Inference</h4>
+          <p>The framework is not conditioned on the true sky realisation, beam or cosmology.</p>
+        </div>
+        <div class="sub">
+          <h4>Full-Fidelity Testing</h4>
+          <p>Evaluated on 100 unseen signals injected into full-fidelity simulated observations.</p>
+        </div>
+        <div class="sub">
+          <h4>Calibrated Recovery</h4>
+          <p>94% of injected profiles lie entirely within their 95% whole-profile credible band.</p>
+        </div>
+        <div class="sub">
+          <h4>Constrained Recovery</h4>
+          <p>75% of posterior means have an RMSE below the 25&nbsp;mK noise level.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════ OPEN BENCHMARK (full width) ═══════════════ -->
+  <div class="bench">
+    <h2><span class="num">4</span>An Open-Source Benchmark</h2>
+    <div class="bcol">
+      <h4>The Open Problem</h4>
+      <ul>
+        <li>Intrinsically <b>degenerate, multimodal posteriors</b> in up to 137 dimensions</li>
+        <li>Reference nested sampling still takes <b>hours per observation</b>, even on a GPU</li>
+        <li>The field needs <b>MCMC, SBI or VI</b> that is both fast and calibrated</li>
+      </ul>
+    </div>
+    <div class="bcol">
+      <h4>What We Provide</h4>
+      <ul>
+        <li><b>100 full-fidelity observations</b> from held-out skies and CEM beams</li>
+        <li>A ready-to-run, differentiable <b>JAX generative model</b> and likelihoods</li>
+        <li><b>Reference NSS posteriors and evidences</b> for every realisation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FOOTER: limitations, refs, links ═══════════════ -->
+  <div class="foot">
+    <div>
+      <h3>Limitations &amp; Next Steps</h3>
+      <ul>
+        <li><b>Towards a digital twin:</b> receiver calibration, heteroskedastic noise and secondary
+          observational effects slot in as modular extensions.</li>
+        <li><b>Inference is now the bottleneck:</b> nested sampling scales as
+          <i>O</i>(<i>D</i><sup>3</sup>) and already needs 5.6–7.3&nbsp;GPU-h per 37-D run.</li>
+        <li><b>Next:</b> benchmark SBI, VI and next-generation samplers as dimensionality grows.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>References</h3>
+      <div class="refs">
+        <div>[1] Tutt <i>et al.</i> 2026, <i>Surrogate modelling and marginalisation of beam uncertainty</i>, arXiv:2608.18962</div>
+        <div>[2] Yallup, Kroupa &amp; Handley 2026, <i>Nested Slice Sampling</i>, TMLR</div>
+        <div>[3] Bevins <i>et al.</i> 2021, <i>globalemu</i>, MNRAS 508, 2923</div>
+        <div>[4] Anstey, de Lera Acedo &amp; Handley 2021, MNRAS 506, 2041</div>
+      </div>
+    </div>
+    <div class="qrs">
+      <div class="qr"><img src="figures/qr-arxiv.svg" alt="QR code: arXiv (placeholder)"><b>Paper</b>arXiv</div>
+      <div class="qr"><img src="figures/qr-github.svg" alt="QR code: GitHub"><b>Code</b>GitHub</div>
+      <div class="qr"><img src="figures/qr-zenodo.svg" alt="QR code: Zenodo"><b>Data</b>Zenodo</div>
+    </div>
+  </div>
+
+</div>
+<script>
+/* Panels are vertically centred beside their figures, so stretch each zig-zag connector
+   to start at the bottom of the box above and end at the top of the box below. */
+(function(){
+  const mm = 96/25.4;
+  function link(){
+    document.querySelectorAll('.conn').forEach(c=>{
+      const prev=c.previousElementSibling.querySelector('.panel'),
+            next=c.nextElementSibling.querySelector('.panel');
+      const C=c.getBoundingClientRect(), P=prev.getBoundingClientRect(), N=next.getBoundingClientRect();
+      const mid=C.height/2, top=P.bottom-C.top, bot=C.bottom-N.top;   /* top<=0, bot<=0 */
+      const v1=c.querySelector('.v1'), v2=c.querySelector('.v2'), tip=c.querySelector('.tip');
+      v1.style.top=top+'px'; v1.style.height=(mid-top)+'px';
+      v2.style.bottom=(bot+3.2*mm)+'px';
+      tip.style.bottom=bot+'px';
+    });
+  }
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(link); } else { window.addEventListener('load',link); }
+  window.addEventListener('load',link);
+})();
+</script>
+</body>
+</html>

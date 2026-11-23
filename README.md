@@ -1,4 +1,23 @@
-# Talks
+# Talks and posters
+
+## Posters
+
+### A Cross-Domain Simulator and Benchmark for Uncertainty Quantification in Global 21-cm Inference (poster)
+
+- Sim2Science: ML with Imperfect Scientific Models, NeurIPS 2026, Paris — December 2026
+- [Poster (PDF)](Sim2Science_NeurIPS_2026/Tutt%20-%20Sim2Science%20NeurIPS%202026%20-%20Global%2021-cm%20Benchmark%20(A1).pdf)
+- [Source files](Sim2Science_NeurIPS_2026/)
+- [Code](https://github.com/JacobTutt/global-21cm-inference-benchmark)
+- [Event website](https://www.sim2science.com)
+
+### A Cross-Domain Simulator and Benchmark for Uncertainty Quantification in Global 21-cm Inference (poster)
+
+- Cavendish Graduate Student Conference, University of Cambridge — 4 December 2026
+- [Poster (PDF)](Cavendish_Graduate_Student_Conference_2026/Tutt%20-%20Cavendish%20Graduate%20Student%20Conference%202026%20-%20Global%2021-cm%20Benchmark%20(A1).pdf)
+- [Source files](Cavendish_Graduate_Student_Conference_2026/)
+- [Code](https://github.com/JacobTutt/global-21cm-inference-benchmark)
+
+## Talks
 
 ### Machine Learning Emulators for Fast Bayesian Inference in 21-cm Cosmology
 
