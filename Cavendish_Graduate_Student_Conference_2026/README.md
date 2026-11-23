@@ -1,6 +1,6 @@
 # Cavendish Graduate Student Conference 2026 — poster
 
-**A Cross-Domain Simulator and Benchmark for Uncertainty Quantification in Global 21-cm Inference**
+**Robust Bayesian Inference for Global 21-cm Cosmology Under Model Misspecification**
 Cavendish Graduate Student Conference 2026 · Cambridge · Friday 4 December 2026
 
 **Deliverable:** `Tutt - Cavendish Graduate Student Conference 2026 - Global 21-cm Benchmark (A1).pdf`
